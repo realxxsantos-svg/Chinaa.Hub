@@ -1,13 +1,13 @@
 --[[
     ═══════════════════════════════════════════════════
-        CHINAA HUB - RIVALS EDITION v6
+        CHINAA HUB - RIVALS EDITION v7
         GitHub Loadstring Version
+        Botão preto redondo com "CH"
     ═══════════════════════════════════════════════════
 ]]
 
 local BG_IMAGE_URL = "https://i.postimg.cc/9FXpJbn3/09747df31407d6cc698d3d52af36b492.jpg"
-local IMAGE_URL = "https://i.postimg.cc/sxmJ3G1k/85ae1689c3e6dce57a95a1dcefd995b3.jpg"
-local FALLBACK_COLOR = Color3.fromRGB(220, 30, 30)
+local FALLBACK_COLOR = Color3.fromRGB(0, 0, 0)
 
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
@@ -371,7 +371,7 @@ task.spawn(function()
 end)
 
 -------------------------------------------------
--- BOTÃO FLUTUANTE
+-- BOTÃO FLUTUANTE (Preto, redondo, com "CH")
 -------------------------------------------------
 local FloatingGui = Instance.new("ScreenGui")
 FloatingGui.Name = "ChinaaFloating"
@@ -380,33 +380,19 @@ FloatingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 pcall(function() FloatingGui.Parent = game:GetService("CoreGui") end)
 if not FloatingGui.Parent then FloatingGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
 
-local FloatingBtn = Instance.new("ImageButton")
+local FloatingBtn = Instance.new("TextButton")
 FloatingBtn.Name = "ChinaaIcon"
-FloatingBtn.Size = UDim2.new(0, 65, 0, 65)
+FloatingBtn.Size = UDim2.new(0, 75, 0, 75)
 FloatingBtn.Position = UDim2.new(0, 20, 0.4, 0)
-FloatingBtn.BackgroundColor3 = FALLBACK_COLOR
+FloatingBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 FloatingBtn.BorderSizePixel = 0
-FloatingBtn.Image = IMAGE_URL
+FloatingBtn.Text = "CH"
+FloatingBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+FloatingBtn.TextScaled = true
+FloatingBtn.Font = Enum.Font.GothamBlack
 FloatingBtn.AutoButtonColor = false
 FloatingBtn.ZIndex = 999
 FloatingBtn.Parent = FloatingGui
-
-local fallbackText = Instance.new("TextLabel")
-fallbackText.Size = UDim2.new(1, 0, 1, 0)
-fallbackText.BackgroundTransparency = 1
-fallbackText.Text = "CH"
-fallbackText.TextColor3 = Color3.fromRGB(255, 255, 255)
-fallbackText.TextScaled = true
-fallbackText.Font = Enum.Font.GothamBlack
-fallbackText.ZIndex = 1000
-fallbackText.Visible = false
-fallbackText.Parent = FloatingBtn
-
-FloatingBtn.ImageFailed:Connect(function()
-    FloatingBtn.Image = ""
-    FloatingBtn.BackgroundColor3 = FALLBACK_COLOR
-    fallbackText.Visible = true
-end)
 
 local corner = Instance.new("UICorner")
 corner.CornerRadius = UDim.new(1, 0)
@@ -414,9 +400,20 @@ corner.Parent = FloatingBtn
 
 local stroke = Instance.new("UIStroke")
 stroke.Color = Color3.fromRGB(255, 255, 255)
-stroke.Thickness = 2
+stroke.Thickness = 1.5
+stroke.Transparency = 0.3
 stroke.Parent = FloatingBtn
 
+local padText = Instance.new("UIPadding")
+padText.PaddingTop = UDim.new(0, 12)
+padText.PaddingBottom = UDim.new(0, 12)
+padText.PaddingLeft = UDim.new(0, 12)
+padText.PaddingRight = UDim.new(0, 12)
+padText.Parent = FloatingBtn
+
+-------------------------------------------------
+-- ABRIR/FECHAR PAINEL
+-------------------------------------------------
 local panelVisible = true
 
 local function setPanelVisible(visible)
@@ -523,6 +520,9 @@ btnDown.MouseButton1Click:Connect(function() applyScale(ScaleValue - 0.1) end)
 btnReset.MouseButton1Click:Connect(function() applyScale(1.0) end)
 btnClose.MouseButton1Click:Connect(function() ResizeFrame.Visible = false end)
 
+-------------------------------------------------
+-- TOQUE NO BOTÃO (CURTO = abrir/fechar | LONGO = resize)
+-------------------------------------------------
 local touchStartTime = 0
 local isDraggingBtn = false
 
@@ -541,6 +541,9 @@ FloatingBtn.MouseButton1Up:Connect(function()
     end
 end)
 
+-------------------------------------------------
+-- ARRASTAR BOTÃO
+-------------------------------------------------
 local dragging = false
 local dragStart, startPos
 local dragThreshold = 8
@@ -585,11 +588,12 @@ end)
 local Window = Rayfield:CreateWindow({
     Name = "Chinaa Hub",
     LoadingTitle = "Chinaa Hub",
-    LoadingSubtitle = "RIVALS v6 | Mobile",
+    LoadingSubtitle = "RIVALS v7 | Mobile",
     ConfigurationSaving = { Enabled = false },
     KeySystem = false,
 })
 
+-- Fundo customizado
 task.spawn(function()
     task.wait(1.5)
     local rayfieldGui = game:GetService("CoreGui"):FindFirstChild("Rayfield")
@@ -736,7 +740,7 @@ MainTab:CreateButton({
         setPanelVisible(false)
         Rayfield:Notify({
             Title = "Chinaa Hub",
-            Content = "Painel escondido — clique no ícone",
+            Content = "Painel escondido — clique no CH",
             Duration = 3,
         })
     end,
@@ -769,6 +773,6 @@ MainTab:CreateToggle({
 
 Rayfield:Notify({
     Title = "Chinaa Hub",
-    Content = "v6 carregado! Clique no ícone 🎨",
+    Content = "v7 carregado! Clique no CH preto 🖤",
     Duration = 5,
 })
